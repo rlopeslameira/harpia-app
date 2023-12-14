@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Teste update app, eas-updates!</Text>
+      <Text style={styles.text}>Harppia auto update!</Text>
       <StatusBar style="auto" />
     </View>
   );
