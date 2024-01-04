@@ -1,1 +1,7 @@
+Send Update 
 eas update --branch preview --message "Update test"
+eas update --branch production --message ""
+
+
+Building APK
+eas build -p android --profile apk

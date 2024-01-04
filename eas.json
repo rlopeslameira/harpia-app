@@ -14,6 +14,13 @@
     },
     "production": {
       "channel": "production"
+    },
+    "apk": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "channel": "preview"
     }
   },
   "submit": {

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "harpia-408113",
+  "private_key_id": "744c35bca97b0fdcf7065b081c61eced55367985",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCtBL9rWwiezsq9\nZ+aW1hGWK3KjUq1ZsAoM8a9AIDvx+GOK4C8Lo440EKHI6UX4yyiVVHBhUrnjBXco\nHgHYfprqi0paVcPSh45sRYfTc/DgQcH1qyTaR0ypVXCY/WxEivv6wVcapuQpOVEl\n4+dAcdKuykUxl2GRLIWIxnHTD8sAA04QSLjh9aw5xVrgc1fhLqXLUSzF290su9EE\n/GoVSQZK8bYcnWrKG1JJAtaqGZVR/dXHIqyVkXxLgjwJwU/g8LfJc2xu37xDQ1QH\nTAAL+FBhK7a8bCizUmYbCpkdhqXp2BUPsyfwdmXsz8+mCcV6ry2wZzXy+n8oBd0R\nA9V2pTEhAgMBAAECggEALt6V4kWvYKHhTwzp7NuBuR38+JxphF3JYzdHg8YXpxVk\nFddkNzFv0M/em9gBkgOq80UECoFIBOVSoaX7VwP5AGeKVU1ddlctcEwnntMOIhn+\nKohZu93LuSWBkpg4L5s85nFgoMIsFbTGtE54Mz+CVMJLm0MIdbTLWcF0TTo+gjpw\n6Pc+5Bjg2vVtK4cz0JShgimc1W9dxkM2sx7AAFPJvJEhnLm4NLzbVqDG/OflcfkR\ndnQ+d6KrPG7BC9l5X1RBcdDfMFFYaIg1rQY0214skD3+KcpVEtzou4qDyHviFxUH\ns88QQM54menwe8+dqY1FssVjp16HAmIzbQqcNgC7fwKBgQDXjfH8W7qoxY5StDg5\ny+X4sSSIlIcFrDyb+OKh9EnJNfpNVeRCte7i8ViMSc4In1jZ3q1cZEtvUG59fJ1g\ni4yTdMmJRBvDjLYArpLGWLf+mQio0tvYAJVrZbCMLYkdbelpE1KI6ypVQXSlQMc4\n/4I4zo+MUJBvCWQnVDiyWf/iYwKBgQDNe5wauv7ZF1zNbXerBjsDIhMaqgkoMyvl\n4rPXCalrO/WNw8xqQFrHWm6ew8c6vPnaH1RUT6AIDDq/+jXrllfEEFar19oPKpQS\nLGRS7v+w/wgpuU7sg7rx3NYmIPFcomNNKDWe6hdVaOF421ACijsQCKqLZIIJlrzK\n94vH1WfzqwKBgQCAf/k7RP/Qrvz6Zr+CDQCKsieiWFDp29TB8qxAeh4mmkweIE8U\nSdsgZVoxP6pYz42rTCkzBANIV72Wh1xWerqSCTQ/5V9bwx2Y6HlNTwRY/agA5Lr0\nWNy6ioOl/VtZNPXJkyBHyVGSQ5QjE6vwWbmq3dELh9eiqgmPvJCUGj0GGwJ/TQ4N\ne/ijmMUqB98FAR1VA9fDUjxxMqH91DcvOXRmE9BoRMEn5rA7WoaO9Pp1u5EiIKme\n9f7mBB6R6WvqzG2Ue/Gkjsxi+Uz+OdJrzK3TNIxugzb6YbcEY65sn9+6owJCOqzZ\nbr5aAa1S3/9eAZXUkC6vxZXrLa1ZHsO1pzpfwQKBgQC6w4d6vUdfxtl2Lh80SdKR\ngvtFEhgjGTynzMr/uhJNMr4C8fhdulMgfEJfjwU9NIOROa6a0cOhgsM1nOFnt36L\neqJOLK0rn6B0RbEN8lNNMPR8ZEWTvo+LZFd3cdATb+PNStOBumWB9QdNsWgt0hA0\nrU8VjaoU4CtpSmtlO3AY9Q==\n-----END PRIVATE KEY-----\n",
+  "client_email": "id-google-play-console-account@harpia-408113.iam.gserviceaccount.com",
+  "client_id": "114019916904059114167",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/id-google-play-console-account%40harpia-408113.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
