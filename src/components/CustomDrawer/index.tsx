@@ -231,7 +231,6 @@ const CustomDrawer = (props: any) => {
           flexWrap: 'wrap',
           justifyContent: 'center',
           alignItems: "flex-start",  
-          backgroundColor: '#FFF'
         }}>
           {props.state?.routes
             .filter((i: any) => i.params?.icon)
@@ -289,7 +288,6 @@ const CustomDrawer = (props: any) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#FFF'
           }}>
             <TouchableOpacity onLongPress={showToken}>
             <Text style={{fontSize: 10, textAlign: 'center', paddingLeft: 6}}>
