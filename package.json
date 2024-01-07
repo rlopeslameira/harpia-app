@@ -1,7 +1,7 @@
 {
   "name": "harpia",
   "version": "1.0.1",
-  "main": "./src/app/index.tsx",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start -c",
     "android": "expo run:android",

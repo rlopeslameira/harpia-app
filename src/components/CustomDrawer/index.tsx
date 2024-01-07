@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Image,
@@ -9,11 +9,11 @@ import {
   Platform,
   Button,
   Text
- } from 'react-native';
-import {DrawerContentScrollView, useDrawerStatus} from '@react-navigation/drawer';
-import {styles} from './styles';
+} from 'react-native';
+import { DrawerContentScrollView, useDrawerStatus } from '@react-navigation/drawer';
+import { styles } from './styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import {useAuth} from '../../contexts/auth';
+import { useAuth } from '../../contexts/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
 import variaveis from '../../config/variaveis';
@@ -33,7 +33,7 @@ const stylesGrid = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    alignItems: "flex-start",  
+    alignItems: "flex-start",
     // marginTop: Platform.OS == 'ios' ? -30 : 0,
     backgroundColor: '#CFC'
   },
@@ -52,7 +52,7 @@ const stylesGrid = StyleSheet.create({
 });
 
 const CustomDrawer = (props: any) => {
-  const {usuario, signOut} = useAuth();
+  const { usuario, signOut } = useAuth();
   const [userImage, setUserImage] = useState(null);
   const [isAluno, setIsAluno] = useState(true);
   const isFocused = useIsFocused();
@@ -60,7 +60,7 @@ const CustomDrawer = (props: any) => {
   const [notificacoesNaoLidas, setNotificacoesNaoLidas] = useState('');
 
   const insets = useSafeAreaInsets();
-  const isDrawerOpen = useDrawerStatus() === 'open';  
+  const isDrawerOpen = useDrawerStatus() === 'open';
 
   useEffect(() => {
     if (usuario)
@@ -73,14 +73,18 @@ const CustomDrawer = (props: any) => {
   const loadCount = async () => {
     setNotificacoesNaoLidas('...');
     setMensagensNaoLidas('...')
-    const resp = await api.get('/chat/aluno/count', {params: {
-      codigo: usuario.codigo,
-      matric: usuario.matric
-    }})
-    const resNotificacoes = await api.get('/notificacoes/totalnaolidas', {params: {
-      codigo: usuario.codigo,
-      matric: usuario.matric
-    }})
+    const resp = await api.get('/chat/aluno/count', {
+      params: {
+        codigo: usuario.codigo,
+        matric: usuario.matric
+      }
+    })
+    const resNotificacoes = await api.get('/notificacoes/totalnaolidas', {
+      params: {
+        codigo: usuario.codigo,
+        matric: usuario.matric
+      }
+    })
 
     setMensagensNaoLidas(resp.data?.total);
     setNotificacoesNaoLidas(resNotificacoes.data?.total);
@@ -88,13 +92,15 @@ const CustomDrawer = (props: any) => {
 
   const loadCountFun = async () => {
     setMensagensNaoLidas('...')
-    const resp = await api.get('/chat/funcionario/contador', {params: {
-      codigo: usuario.codigo,
-      matric: usuario.matric,
-      escola: usuario.escola,
-      ano: usuario.ano,
-      seqano: usuario.seqano,
-    }})
+    const resp = await api.get('/chat/funcionario/contador', {
+      params: {
+        codigo: usuario.codigo,
+        matric: usuario.matric,
+        escola: usuario.escola,
+        ano: usuario.ano,
+        seqano: usuario.seqano,
+      }
+    })
     console.log(resp.data);
     setMensagensNaoLidas(resp.data?.total);
   }
@@ -140,7 +146,7 @@ const CustomDrawer = (props: any) => {
     //       foto: base64image,
     //     });
     //   }
-      // setLoading(false);
+    // setLoading(false);
   };
 
   const showToken = async () => {
@@ -154,7 +160,7 @@ const CustomDrawer = (props: any) => {
       const img = await AsyncStorage.getItem(usuario.matric);
       if (img) {
         setUserImage(img.includes('data:image') ? img : 'data:image/jpeg;base64,' + img);
-      }else{
+      } else {
         setUserImage(null);
       }
     }
@@ -163,19 +169,19 @@ const CustomDrawer = (props: any) => {
       loadUserImage();
     }
 
-    setIsAluno(usuario?.matric.substr(0,2) != '85');
+    setIsAluno(usuario?.matric.substr(0, 2) != '85');
   }, [usuario]);
 
   return (
     <View style={{
-        flex: 1,
-        paddingTop: insets.top, 
-        paddingBottom: insets.bottom,
-        paddingLeft: insets.left,
-        paddingRight: insets.right, 
-        backgroundColor: '#0284c7'
-      }}>
-      <View style={{width: "100%",height: 180,marginTop: -4, backgroundColor: '#0284c7'}}>
+      flex: 1,
+      paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+      paddingRight: insets.right,
+      backgroundColor: '#0284c7'
+    }}>
+      <View style={{ width: "100%", height: 180, marginTop: -4, backgroundColor: '#028' }}>
         <View style={styles.containerInfo}>
           <View
             style={{
@@ -191,20 +197,19 @@ const CustomDrawer = (props: any) => {
                 justifyContent: 'center',
               }}
               onPress={() => handleSelectImage()}>
-                <Image
-                  source={
-                    userImage
-                      ? {uri: userImage}
-                      : require('../../../assets/favicon.png')
-                  }
-                  style={styles.imageProfile}
-                />
+              <Image
+                source={
+                  userImage
+                    ? { uri: userImage }
+                    : require('../../../assets/favicon.png')
+                }
+                style={styles.imageProfile}
+              />
             </TouchableOpacity>
             <Image
               source={{
-                uri: `http://aplicativomaisescola.com.br/logos/${
-                  usuario.codigo
-                }.png`,
+                uri: `http://aplicativomaisescola.com.br/logos/${usuario.codigo
+                  }.png`,
               }}
               style={styles.logo}
             />
@@ -224,13 +229,13 @@ const CustomDrawer = (props: any) => {
           </View>
         </View>
       </View>
-      <View style={{flex: 1, justifyContent: 'space-between'}}>
+      <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{
           flex: 1,
           flexDirection: 'row',
           flexWrap: 'wrap',
           justifyContent: 'center',
-          alignItems: "flex-start",  
+          alignItems: "flex-start",
         }}>
           {props.state?.routes
             .filter((i: any) => i.params?.icon)
@@ -239,8 +244,8 @@ const CustomDrawer = (props: any) => {
                 key={item.name}
                 style={stylesGrid.boxContainer}
                 onPress={() => props.navigation.navigate(item.name)}
-                >                  
-                <View style={{alignItems: "center",justifyContent: "center"}}>
+              >
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
                   {/* {item.name == 'Chat' && mensagensNaoLidas !== '' && mensagensNaoLidas != '0' && (
                     <Badge // bg="red.400"
                         colorScheme="danger" rounded="full" mb={-4} mr={-4} zIndex={1} variant="solid" alignSelf="flex-end" _text={{
@@ -270,8 +275,8 @@ const CustomDrawer = (props: any) => {
                       size={40}
                       name={item.params.icon}
                     />
-                  )}                  
-                  <Text style={{color: "black", fontSize: 12, textAlign:"center"}}>
+                  )}
+                  <Text style={{ color: "black", fontSize: 12, textAlign: "center" }}>
                     {item?.params?.title}
                   </Text>
                 </View>
@@ -289,11 +294,11 @@ const CustomDrawer = (props: any) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-            <TouchableOpacity onLongPress={showToken}>
-            <Text style={{fontSize: 10, textAlign: 'center', paddingLeft: 6}}>
+          <TouchableOpacity onLongPress={showToken}>
+            <Text style={{ fontSize: 10, textAlign: 'center', paddingLeft: 6 }}>
               Versão {variaveis.versao}
             </Text>
-            </TouchableOpacity>
+          </TouchableOpacity>
           <Button title='Sair' color='black' onPress={signOut} />
         </View>
       </View>
