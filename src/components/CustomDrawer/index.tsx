@@ -35,7 +35,6 @@ const stylesGrid = StyleSheet.create({
     justifyContent: 'center',
     alignItems: "flex-start",
     // marginTop: Platform.OS == 'ios' ? -30 : 0,
-    backgroundColor: '#CFC'
   },
   boxContainer: {
     marginTop: marginVertical,
@@ -47,7 +46,6 @@ const stylesGrid = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    //  backgroundColor: '#FF0',
   },
 });
 
@@ -179,9 +177,9 @@ const CustomDrawer = (props: any) => {
       paddingBottom: insets.bottom,
       paddingLeft: insets.left,
       paddingRight: insets.right,
-      backgroundColor: '#0284c7'
+      backgroundColor: '#0284c7' // fundo do menu
     }}>
-      <View style={{ width: "100%", height: 180, marginTop: -4, backgroundColor: '#028' }}>
+      <View style={{ width: "100%", height: 180, marginTop: -4, }}>
         <View style={styles.containerInfo}>
           <View
             style={{

@@ -8,11 +8,13 @@ import {
 import React from 'react';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { useDrawerProgress } from '@react-navigation/drawer';
+import tw from 'twrnc';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const DrawerSceneWrapper = ({ children }) => {
     const progress = useDrawerProgress();
     const { width } = useWindowDimensions();
-    console.log(progress.value);
+    const insets = useSafeAreaInsets();
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [
@@ -27,7 +29,7 @@ const DrawerSceneWrapper = ({ children }) => {
                 translateX: interpolate(
                     progress.value,
                     [0, 1],
-                    [0, Platform.OS === 'android' ? width - 130 : -60],
+                    [0, Platform.OS === 'android' ? - 50 : -60],
                     'clamp',
                 ),
             },
@@ -48,6 +50,6 @@ export default DrawerSceneWrapper;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF' // fundo das pages
     },
 });

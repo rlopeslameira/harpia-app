@@ -5,6 +5,7 @@ import Alunos from '../app/(app)/alunos';
 import Periodos from '../app/(app)/periodos';
 import { Platform } from 'react-native';
 import CustomDrawer from '../components/CustomDrawer';
+import Index from '../app/(app)';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,13 +32,20 @@ const DrawerNavigator = () => {
         overlayColor: Colors.transparent,
         drawerStyle: {
           backgroundColor: Colors.bg,
-          width: '60%',
+          width: '80%',
         },
         sceneContainerStyle: {
-          backgroundColor: Colors.bg,
+          backgroundColor: '#0284c7', // fundo atrás das pages
         },
         drawerType: 'slide',
       }}>
+      <Drawer.Screen
+        name="Home"
+        component={Index}
+        options={{
+          drawerIcon: options => drawerIcon(options, 'home-outline'),
+        }}
+      />
       <Drawer.Screen
         name="Alunos"
         component={Alunos}
