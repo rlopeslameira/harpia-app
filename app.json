@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -25,7 +25,17 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "br.com.harpiaeducacional"
+      "package": "br.com.harpiaeducacional",
+      "googleServicesFile": "./google-services.json",
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "READ_PHONE_STATE",
+        "INTERNET",
+        "com.google.android.c2dm.permission.RECEIVE",
+        "VIBRATE",
+        "RECEIVE_BOOT_COMPLETED"
+      ]
     },   
     "extra": {
       "eas": {
@@ -40,7 +50,18 @@
     },
     "plugins": [
       "expo-router",
-      "expo-splash-screen"
+      "expo-splash-screen",
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+      ]
     ]
   }
 }

@@ -4,7 +4,6 @@ import api from '../services/api';
 import variaveis from '../config/variaveis';
 import ToastManager, { Toast } from 'toastify-react-native'
 import IAuthContextData from '../interfaces/IAuthContextData';
-import ISignIn from '../interfaces/ISigIn';
 import { IUsuario } from '../interfaces/IUsuario';
 
 const AuthContext = createContext<IAuthContextData>(null);
@@ -28,7 +27,9 @@ export const AuthProvider = ({children}) => {
   useEffect(() => {    
     if (usuario)
       if (usuario?.matric?.substr(0,2) !== '85')
-        verificaPendenciaFinanceira();
+      {
+        //verificaPendenciaFinanceira();
+      }
 
   }, [usuario]);
 
@@ -233,7 +234,7 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('alunodebito');
 
     }catch(e){
-      console.log(e);
+      console.log('Erro ao acessar a api', e);
     }
   }
  

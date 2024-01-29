@@ -29,6 +29,8 @@ interface IUsuario {
     setor?: string;
     atende?: string;
     agenda?: string;
+
+    parametros?: any;
 }
 
 interface IAcessos {

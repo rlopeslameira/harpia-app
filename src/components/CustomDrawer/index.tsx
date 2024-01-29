@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Image,
-  ImageBackground,
   TouchableOpacity,
   StyleSheet,
   Alert,
-  Platform,
-  Button,
-  Text
+  Text,
+  ScrollView
 } from 'react-native';
-import { DrawerContentScrollView, useDrawerStatus } from '@react-navigation/drawer';
-import { styles } from './styles';
+import { useDrawerStatus } from '@react-navigation/drawer';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useAuth } from '../../contexts/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,8 +17,8 @@ import variaveis from '../../config/variaveis';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/core';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { style } from 'twrnc';
-
+import Util from '../../services/util';
+import * as ImagePicker from 'expo-image-picker';
 
 const marginHorizontal = 4;
 const marginVertical = 4;
@@ -52,15 +49,17 @@ const stylesGrid = StyleSheet.create({
 const CustomDrawer = (props: any) => {
   const { usuario, signOut } = useAuth();
   const [userImage, setUserImage] = useState(null);
-  const [isAluno, setIsAluno] = useState(true);
   const isFocused = useIsFocused();
   const [mensagensNaoLidas, setMensagensNaoLidas] = useState('');
   const [notificacoesNaoLidas, setNotificacoesNaoLidas] = useState('');
-
-  const insets = useSafeAreaInsets();
+  const [isAluno, setIsAluno] = useState(true);  
+  const [selectedMenu, setSelectedMenu] = useState('Home');
+  const insets = useSafeAreaInsets(); 
   const isDrawerOpen = useDrawerStatus() === 'open';
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    
     if (usuario)
       if (isAluno)
         loadCount();
@@ -104,54 +103,46 @@ const CustomDrawer = (props: any) => {
   }
 
   const handleSelectImage = async () => {
-    // setLoading(true);
+    setLoading(true);
 
-    // let usuarios: any = await AsyncStorage.getItem('usuarios');
-    // if (usuarios) {
-    //   usuarios = JSON.parse(usuarios);
-    // } else {
-    //   usuarios = [];
-    // }
+    let usuarios: any = await AsyncStorage.getItem('usuarios');
+    if (usuarios) {
+      usuarios = JSON.parse(usuarios);
+    } else {
+      usuarios = [];
+    }
 
-    // const response = await launchImageLibrary({
-    //   mediaType: 'photo',
-    //   quality: 0.5,
-    //   maxWidth: 1000,
-    //   maxHeight: 1000,
-    //   selectionLimit: 1,
-    //   includeBase64: true,
-    // });
+    const response = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.5,
+      selectionLimit: 1,
+      base64: true,
+    });
 
-    // if (response.errorCode) {
-    //   // console.log('Erro ao selecionar a imagem: ', response.errorCode);
-    // } else if (response.didCancel) {
-    //   // setLoading(false);
-    // } else {
-    //   let base64image = response?.assets[0]?.base64;
+   if (response.canceled) {
+      setLoading(false);
+    } else {
+      let base64image = response?.assets[0]?.base64;
 
-    //   if (base64image) {
-    //     base64image = base64image.includes('data:image')
-    //       ? base64image
-    //       : 'data:image/jpeg;base64,' + base64image;
-    //     setUserImage(base64image);
+      if (base64image) {
+        base64image = base64image.includes('data:image')
+          ? base64image
+          : 'data:image/jpeg;base64,' + base64image;
+        setUserImage(base64image);
 
-    //     await AsyncStorage.setItem(usuario.matric, base64image);
+        await AsyncStorage.setItem(usuario.matric, base64image);
 
-    //     api.post('aluno/gravafoto', {
-    //       codigo: usuario.codigo,
-    //       escola: usuario.escola,
-    //       matric: usuario.matric,
-    //       foto: base64image,
-    //     });
-    //   }
-    // setLoading(false);
+        api.post('aluno/gravafoto', {
+          codigo: usuario.codigo,
+          escola: usuario.escola,
+          matric: usuario.matric,
+          foto: base64image,
+        });
+      }
+    }
+    setLoading(false);
   };
-
-  const showToken = async () => {
-    const token = await AsyncStorage.getItem('token');
-    if (token)
-      Alert.alert('Token', token);
-  }
+  
 
   useEffect(() => {
     async function loadUserImage() {
@@ -168,6 +159,7 @@ const CustomDrawer = (props: any) => {
     }
 
     setIsAluno(usuario?.matric.substr(0, 2) != '85');
+
   }, [usuario]);
 
   return (
@@ -177,19 +169,19 @@ const CustomDrawer = (props: any) => {
       paddingBottom: insets.bottom,
       paddingLeft: insets.left,
       paddingRight: insets.right,
-      backgroundColor: '#0284c7' // fundo do menu
+      backgroundColor: '#FFF' // fundo do menu
     }}>
-      <View style={{ width: "100%", height: 180, marginTop: -4, }}>
+      <View style={{ width: "100%", height: 130, }}>
         <View style={styles.containerInfo}>
           <View
             style={{
               width: '100%',
               padding: 6,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
               alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row'
             }}>
-            <TouchableOpacity
+              <TouchableOpacity
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -201,107 +193,194 @@ const CustomDrawer = (props: any) => {
                     ? { uri: userImage }
                     : require('../../../assets/favicon.png')
                 }
-                style={styles.imageProfile}
+              resizeMode='contain'
+              style={styles.imageProfile}
               />
             </TouchableOpacity>
+
             <Image
               source={{
-                uri: `http://aplicativomaisescola.com.br/logos/${usuario.codigo
-                  }.png`,
+                uri: `http://aplicativomaisescola.com.br/logos/${
+                  usuario.codigo
+                }.png`,
               }}
               style={styles.logo}
-            />
+              resizeMode='contain'
+            />                      
           </View>
-          <View style={styles.containerData}>
-            <Text style={styles.textData}>
-              {usuario.matric} - {usuario.nome}
-            </Text>
-            {isAluno && (
-              <Text style={styles.textData} numberOfLines={1}>
-                {usuario.turma} - {usuario.turma_des}
-              </Text>
-            )}
-            <Text style={styles.textData} numberOfLines={1}>
-              Período: {usuario?.ano} / {usuario?.seqano}
+          <View >
+            <Text style={{ fontSize: 18, fontWeight: '500', color: '#027DBF', padding: 6}}>
+                {Util.getFirstAndLastName(usuario.nome)}
             </Text>
           </View>
         </View>
       </View>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
-        <View style={{
-          flex: 1,
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: "flex-start",
-        }}>
-          {props.state?.routes
-            .filter((i: any) => i.params?.icon)
-            .map((item: any) => (
-              <TouchableOpacity
-                key={item.name}
-                style={stylesGrid.boxContainer}
-                onPress={() => props.navigation.navigate(item.name)}
-              >
-                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                  {/* {item.name == 'Chat' && mensagensNaoLidas !== '' && mensagensNaoLidas != '0' && (
-                    <Badge // bg="red.400"
-                        colorScheme="danger" rounded="full" mb={-4} mr={-4} zIndex={1} variant="solid" alignSelf="flex-end" _text={{
-                          fontSize: 12
-                        }}>
-                        {mensagensNaoLidas}
-                    </Badge>
-                  )}
+        <ScrollView style={{ marginTop: 10 }}>
+          <View style={{
+            flex: 1,
+            flexDirection: 'column',
+            gap: 8
+          }}>          
+            {props.state?.routes
+              .filter((i: any) => i.params?.icon)
+              .map((item: any) => (
+                  <TouchableOpacity
+                    key={item.name}
+                    style={ selectedMenu == item.name ? styles.btMenuListActive : styles.btMenuList} activeOpacity={0.7}
+                    onPress={() => {
+                      setSelectedMenu(item.name);
+                      props.navigation.navigate(item.name);
+                    }}
+                  >
+                      {/* {item.name == 'Chat' && mensagensNaoLidas !== '' && mensagensNaoLidas != '0' && (
+                        <Badge // bg="red.400"
+                            colorScheme="danger" rounded="full" mb={-4} mr={-4} zIndex={1} variant="solid" alignSelf="flex-end" _text={{
+                              fontSize: 12
+                            }}>
+                            {mensagensNaoLidas}
+                        </Badge>
+                      )}
 
-                  {item.name == 'Notificacoes' && notificacoesNaoLidas !== '' && notificacoesNaoLidas != '0' && (
-                    <Badge // bg="red.400"
-                        colorScheme="danger" rounded="full" mb={-4} mr={-4} zIndex={1} variant="solid" alignSelf="flex-end" _text={{
-                          fontSize: 12
-                        }}>
-                        {notificacoesNaoLidas}
-                    </Badge>
-                  )} */}
-                  {item?.params?.FA ? (
-                    <FontAwesome5
-                      color="black"
-                      size={40}
-                      name={item.params.icon}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      color="black"
-                      size={40}
-                      name={item.params.icon}
-                    />
-                  )}
-                  <Text style={{ color: "black", fontSize: 12, textAlign: "center" }}>
-                    {item?.params?.title}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-        </View>
-
-        <View
-          style={{
-            height: 46,
-            padding: 4,
-            borderTopWidth: 0.5,
-            borderTopColor: '#CCC',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity onLongPress={showToken}>
-            <Text style={{ fontSize: 10, textAlign: 'center', paddingLeft: 6 }}>
-              Versão {variaveis.versao}
-            </Text>
-          </TouchableOpacity>
-          <Button title='Sair' color='black' onPress={signOut} />
-        </View>
+                      {item.name == 'Notificacoes' && notificacoesNaoLidas !== '' && notificacoesNaoLidas != '0' && (
+                        <Badge // bg="red.400"
+                            colorScheme="danger" rounded="full" mb={-4} mr={-4} zIndex={1} variant="solid" alignSelf="flex-end" _text={{
+                              fontSize: 12
+                            }}>
+                            {notificacoesNaoLidas}
+                        </Badge>
+                      )} */}
+                      {item?.params?.FA ? (
+                        <FontAwesome5
+                          color={selectedMenu == item.name ? variaveis.textColor : variaveis.secondaryColor}
+                          size={32}
+                          name={item.params.icon}
+                          style={styles.btMenuIcon}
+                        />
+                      ) : (
+                        <MaterialCommunityIcons
+                          color={selectedMenu == item.name ? variaveis.textColor : variaveis.secondaryColor}
+                          size={32}
+                          name={item.params.icon}
+                          style={styles.btMenuIcon}
+                        />
+                      )}
+                      <Text style={selectedMenu == item.name ? styles.btMenuTextActive :styles.btMenuText}>
+                        {item?.params?.title}
+                      </Text>
+                  </TouchableOpacity>
+              ))}
+            <TouchableOpacity style={{
+              width: '100%',
+              flexDirection: 'row',
+              alignItems: 'center',    
+              backgroundColor: 'transparent',    
+              padding: 2,
+              marginBottom: 10
+            }} activeOpacity={0.7} onPress={signOut} >
+              <MaterialCommunityIcons name="exit-run" size={24} color={variaveis.secondaryColor} style={styles.btMenuIcon}/>
+              <Text style={styles.btMenuText}>Sair</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
 };
 
 export default CustomDrawer;
+
+
+const styles = StyleSheet.create({
+  imageBackground: {
+    width: "100%",
+    height: 180,
+    marginTop: -4,
+  },
+
+  containerInfo: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 6,
+  },
+
+  imageProfile: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    marginTop: 6,
+  },
+
+  logo: {
+    width: 120,
+    height: 90,
+    backgroundColor: 'white',
+    borderRadius: 6
+  },
+
+  containerData: {
+    flex: 1,
+    width: '100%',
+  },
+
+  textData: {
+    fontSize: 12,
+    color: "#027DBF",
+    fontWeight: "bold",
+  },
+
+  // btMenu: {
+  //   marginBottom: marginVertical,
+  //   marginLeft: marginHorizontal,
+  //   marginRight: marginHorizontal,
+  //   width: width,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',    
+  //   backgroundColor: '#FFF',    
+  //   borderRadius: 10,
+  //   padding: 4,
+  // },
+  btMenuList: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',    
+    backgroundColor: 'transparent',    
+    padding: 2,
+  },  
+  btMenuIcon: {
+    marginHorizontal: 16,
+  },
+  btMenuText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: variaveis.secondaryColor,
+    textAlign: 'center',
+  },
+
+  btMenuListActive: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',    
+    backgroundColor:  variaveis.secondaryColor,    
+    borderTopEndRadius: 10,
+    borderBottomEndRadius: 10,
+    padding: 2,
+  },
+  btMenuTextActive: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: variaveis.textColor,
+    textAlign: 'center',
+  },
+
+  btMenuSelected: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#4682B4',
+    width: 90,
+    height: 90,
+    borderWidth: 1,
+    borderColor: '#4682B4',
+    color: '#FFF',
+  }
+});

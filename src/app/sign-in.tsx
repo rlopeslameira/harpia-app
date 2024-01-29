@@ -2,7 +2,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { Image, Button, View, TextInput, Text, KeyboardAvoidingView, Platform, Touchable, ActivityIndicator, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useAuth } from '../contexts/auth';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import logoHarpia from '../../assets/logo512.png';
 import variaveis from '../config/variaveis';
@@ -15,6 +15,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Toast } from 'toastify-react-native';
 import api from '../services/api';
 
+
+
 export default function SignIn() {
   const { signIn } = useAuth();
   const [codigo, setCodigo] = useState('');
@@ -25,7 +27,7 @@ export default function SignIn() {
   const insets = useSafeAreaInsets();
   const [logo, setLogo] = useState(null);
   const refMatric = useRef(null);
-
+  
   useFocusEffect(
     useCallback(() => {
 
@@ -112,7 +114,7 @@ export default function SignIn() {
                   returnKeyType='next'
                   keyboardType='numeric'
                   style={tw`bg-white rounded px-4 py-2 w-70 touch-pan-down:bg-slate-950`}
-                  placeholderTextColor={variaveis.placeholderTextColor}
+                  placeholderTextColor={variaveis.secondaryColor}
                   placeholder='12345' value={codigo} onChangeText={setCodigo} onBlur={() => getEscola()} />
               </View>
               <View>
@@ -122,7 +124,7 @@ export default function SignIn() {
                   keyboardType='numeric'
                   ref={refMatric}
                   style={tw`bg-white rounded px-4 py-2 w-70 touch-pan-down:bg-slate-950`}
-                  placeholderTextColor={variaveis.placeholderTextColor}
+                  placeholderTextColor={variaveis.secondaryColor}
                   placeholder='1800001' value={matric} onChangeText={setMatric} />
               </View>
               <View>
@@ -131,7 +133,7 @@ export default function SignIn() {
                   returnKeyType='done'
                   secureTextEntry={true}
                   style={tw`bg-white rounded px-4 py-2 w-70 touch-pan-down:bg-slate-950`}
-                  placeholderTextColor={variaveis.placeholderTextColor}
+                  placeholderTextColor={variaveis.secondaryColor}
                   placeholder='*******' value={senha} onChangeText={setSenha} />
               </View>
               <TouchableOpacity

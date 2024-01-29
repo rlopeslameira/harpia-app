@@ -4,17 +4,28 @@ import {
     StyleSheet,
     Platform,
     useWindowDimensions,
+    TouchableOpacity,
+    Alert,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { useDrawerProgress } from '@react-navigation/drawer';
 import tw from 'twrnc';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Util from '../services/util';
+import { useAuth } from '../contexts/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import variaveis from '../config/variaveis';
 
 const DrawerSceneWrapper = ({ children }) => {
+    const { usuario } = useAuth();
     const progress = useDrawerProgress();
-    const { width } = useWindowDimensions();
     const insets = useSafeAreaInsets();
+    const [isAluno, setIsAluno] = useState(true);
+
+    useEffect(() => {
+        setIsAluno(usuario?.matric.substr(0, 2) != '85');
+    }, [])
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [
@@ -38,9 +49,31 @@ const DrawerSceneWrapper = ({ children }) => {
         overflow: 'hidden',
     }));
 
+    const showToken = async () => {
+        const token = await AsyncStorage.getItem('token');
+        if (token)
+          Alert.alert('Token', token);
+      }
+      
     return (
         <Animated.View style={[styles.container, animatedStyle]}>
             {children}
+            <View style={{                 
+                padding: 4, 
+                backgroundColor: variaveis.secondaryColor, 
+                paddingBottom: insets.bottom - 10,
+                alignItems: 'center'
+                }}>
+                <Text style={{fontSize: 12, color: variaveis.textColor}}>{usuario?.codigo} - {usuario?.turma} - {usuario.matric} - {Util.getFirstAndLastName(usuario.nome)}</Text>
+                <Text style={{fontSize: 12, fontWeight: 'bold', color: variaveis.textColor}}>
+                    Período: {usuario?.ano} / {usuario?.seqano}
+                </Text>
+                <TouchableOpacity onLongPress={showToken}>
+                    <Text style={{ fontSize: 10, textAlign: 'center', color: variaveis.textColor, paddingBottom: 4}}>
+                        Versão {variaveis.versao}
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </Animated.View>
     );
 };
@@ -50,6 +83,6 @@ export default DrawerSceneWrapper;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF' // fundo das pages
+        backgroundColor: '#F5F5F5' // fundo das pages
     },
 });
